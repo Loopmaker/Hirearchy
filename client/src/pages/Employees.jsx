@@ -18,22 +18,23 @@ const Employees = () => {
     setTimeout(() => {
       setLoading(false);
     },1000);
-  }, [])
+  }, [selectedDept])
 
   useEffect(() => {
     fetchEmployees();
-  }, [])
+  }, [fetchEmployees])
 
   const filtered = employees.filter((emp) => `${emp.firstName} ${emp.lastName} ${emp.position}`.toLowerCase().includes(search.toLowerCase()))
   return (
     <div className="animate-fade-in">
+      {/* Need to clean up, theres so many divs */}
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
           <h1 className="page-title">Employees</h1>
           <p className="page-subtitle">Manage your team members and their information.</p>
         </div>
-        <button onClick={() => setShowCreateModal(true)} className="btn-primary flex items-center gap-2 w-full sm:w-auto justify-center">
+        <button onClick={() => setShowCreateModal(true)} className="btn-primary flex items-center gap-2 w-full sm:w-auto justify-center cursor-pointer">
           <Plus size={16}/> Add Employee
         </button>
       </div>
@@ -78,7 +79,7 @@ const Employees = () => {
                 <h2 className="text-lg font-semibold text-slate-900">Add New Employee</h2>
                 <p className="text-sm text-slate-500 mt-0.5">Create a user account and employee profile</p>
               </div>
-              <button onClick={() => setShowCreateModal(false)} className="p-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-600">
+              <button onClick={() => setShowCreateModal(false)} className="p-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-600 cursor-pointer">
                 <X className="w-5 h-5"/>
               </button>
             </div>
@@ -104,7 +105,7 @@ const Employees = () => {
                 <h2 className="text-lg font-semibold text-slate-900">Edit Employee</h2>
                 <p className="text-sm text-slate-500 mt-0.5">Update employee details</p>
               </div>
-              <button onClick={() => setEditEmployee(null)} className="p-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-600">
+              <button onClick={() => setEditEmployee(null)} className="p-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-600 cursor-pointer">
                 <X className="w-5 h-5"/>
               </button>
             </div>

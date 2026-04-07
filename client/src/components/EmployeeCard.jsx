@@ -34,13 +34,13 @@ const EmployeeCard = ({ employee , onDelete, onEdit}) => {
         <div className='absolute inset-0 bg-linear-to-t from-slate-700/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-6 gap-3'>
           <button
             onClick={() => onEdit(employee)}
-            className='p-2.5 bg-white/90 backdrop-blur-sm text-gray-700 hover:text-black rounded-xl shadow-lg transition-all hover:scale-105'
+            className='p-2.5 bg-white/90 backdrop-blur-sm text-gray-700 hover:text-black rounded-xl shadow-lg transition-all hover:scale-105 cursor-pointer'
           >
             <PencilIcon className='w-4 h-4' />
           </button>
           <button
             onClick={handleDelete}
-            className='p-2.5 bg-white/90 backdrop-blur-sm text-slate-700 hover:text-rose-600 rounded-xl shadow-lg transition-all hover:scale-105 disabled:opacity-50'
+            className='p-2.5 bg-white/90 backdrop-blur-sm text-slate-700 hover:text-rose-600 rounded-xl shadow-lg transition-all hover:scale-105 disabled:opacity-50 cursor-pointer'
           >
             <Trash2Icon className='w-4 h-4' />
           </button>

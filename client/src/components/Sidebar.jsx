@@ -15,7 +15,7 @@ const Sidebar = () => {
       setMobileOpen(false);
   }, [pathname]);
 
-  const role = 'ADMIN' || "EMPLOYEE"; // Replace with actual role from auth context or state
+  const role = '' || "EMPLOYEE"; // Replace with actual role from auth context or state
   const navItems = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutGridIcon },
     role === "ADMIN" ?
