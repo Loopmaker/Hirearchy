@@ -1,21 +1,30 @@
-import  { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import  { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { dummyProfileData } from '../assets/assets';
-import { Calendar1Icon, ChevronRightIcon, DollarSign, FileTextIcon, LayoutGridIcon, LogOutIcon, MenuIcon, SettingsIcon, UserIcon, XIcon } from 'lucide-react'
+import { Calendar1Icon, ChevronRightIcon, DollarSign, FileTextIcon, LayoutGridIcon, Loader2, LogOutIcon, MenuIcon, SettingsIcon, UserIcon, XIcon } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import api from '../api/axios';
+
+
 const Sidebar = () => {
+
   const { pathname } = useLocation();
   const [ userName, setUserName ] = useState('');
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const {user, loading, logout} = useAuth();
+
   useEffect(() =>{
-    setUserName(dummyProfileData.firstName + ' ' + dummyProfileData.lastName);
+    api.get("/profile").then(({data})=>{
+      if(data.firstName) setUserName(`${data.firstName} ${data.lastName || ""}`.trim());
+    })
   }, []);
 
   useEffect(() =>{
       setMobileOpen(false);
   }, [pathname]);
 
-  const role = '' || "EMPLOYEE"; // Replace with actual role from auth context or state
+  const role = user?.role;
   const navItems = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutGridIcon },
     role === "ADMIN" ?
@@ -27,6 +36,7 @@ const Sidebar = () => {
   ];
 
   const handleLogout = () => {
+    logout()
     window.location.href = '/login';
 
   };
@@ -82,7 +92,13 @@ const Sidebar = () => {
         aria-label="Main navigation"
         className='flex-1 px-3 space-y-0.5 overflow-y-auto'
       >
-        <ul>
+        {loading ? (
+          <div className='px-3 py-3 flex items-center gap-2 text-slate-500'>
+            <Loader2 className='animate-spin w-4 h-4'/>
+            <span className='text-sm'>Loading...</span>
+          </div>
+        ) : (
+          <ul>
           {navItems.map((item) => {
             const isActive = pathname.startsWith(item.href);
 
@@ -119,6 +135,9 @@ const Sidebar = () => {
             );
           })}
         </ul>
+
+        )}
+        
       </nav>
     </section>
 
