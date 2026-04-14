@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import LoginLeftside from './LoginLeftside'
+import LoginLeftside from './LoginLeftSide'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowLeftIcon, EyeOffIcon, EyeIcon, Loader2Icon } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
