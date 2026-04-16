@@ -53,9 +53,9 @@ export const clockInOut = async (req, res) => {
         existing.dayType = dayType;
 
         await existing.save();
-        return response.json({success: true, type: "CHECK_OUT", data: existing});
+        return res.json({success: true, type: "CHECK_OUT", data: existing});
       } else {
-        return response.json({success: true, type: "CHECK_OUT", data: existing});
+        return res.json({success: true, type: "CHECK_OUT", data: existing});
       }
 
   } catch (error) {
