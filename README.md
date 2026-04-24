@@ -1,23 +1,65 @@
 # Employee Management System
 
-This project is a simple employee management system built with a React/Vite frontend and an Express/MongoDB backend.
+A  full-stack Employee Management System with authentication, attendance, leave management, payslip generation, and profile management. Frontend is built with React + Vite and Tailwind; backend is an Express API with MongoDB, JWT auth, and Nodemailer for email notifications.
 
-It includes features like:
-- Login and authentication
-- Employee dashboard and admin dashboard
-- Attendance check-in and history
-- Leave application and history
-- Payslip generation and listing
-- Profile management and settings
+# Features
 
-## Repo structure
+- **Authentication**
+  - Login system
+  - Protected routes
+  - JWT-based sessions
 
-- `backend/` - Node.js API using Express, Mongoose, JWT, and Nodemailer
-- `client/` - React app using Vite, Tailwind CSS, and Axios
+- **Role-based UI**
+  - Admin dashboard
+  - Employee dashboard
+
+- **Attendance**
+  - Check-in functionality
+  - Attendance history
+  - Summary statistics
+
+- **Leave Management**
+  - Apply for leave
+  - View leave history
+  - Approve/reject workflow
+
+- **Payslips**
+  - Generate payslips
+  - List payslips
+  - Download and print payslips
+
+- **Profile Management**
+  - View and update profile
+  - Change password
+
+- **Notifications**
+  - Email notifications using Nodemailer
+
+- **Database Utilities**
+  - Seed script for demo/test data
+
+# Tech Stack
+
+## Frontend
+- React
+- Vite
+- Tailwind CSS
+- Axios
+
+## Backend
+- Node.js
+- Express
+- Mongoose (MongoDB)
+- JWT (Authentication)
+- Nodemailer (Email service)
+
+## Dev Tools
+- nodemon (backend development)
+- Vite (frontend development)
 
 ## Links
 
-- Demo / Deployment: [https://hirearchy-ems.vercel.app/login]
+- Demo / Deployment: [https://hirearchy-ems.vercel.app/]
 
 
 ## What I learned
