@@ -13,6 +13,7 @@ import dashboardRouter from "./routes/dashboardRoutes.js";
 
 import { serve } from "inngest/express";
 import { inngest, functions } from "./inngest/index.js"
+import dbPingRouter from "./routes/dbPingRouter.js";
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use("/api/attendance", attendanceRouter);
 app.use("/api/leave", leaveRouter);
 app.use("/api/payslips", payslipRouter);
 app.use("/api/dashboard", dashboardRouter);
+app.use("/api/db", dbPingRouter);
 
 app.use("/api/inngest", serve({ client: inngest, functions }));
 
