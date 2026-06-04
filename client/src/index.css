@@ -1,37 +1,131 @@
-@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Outfit:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
+:root {
+  --app-bg: oklch(97.8% 0.006 230);
+  --app-surface: oklch(99% 0.004 230);
+  --app-surface-muted: oklch(95.8% 0.008 230);
+
+  --app-border: oklch(88.5% 0.014 230);
+  --app-border-strong: oklch(80% 0.02 230);
+
+  --app-text: oklch(23% 0.026 235);
+  --app-text-muted: oklch(52% 0.035 235);
+  --app-text-soft: oklch(66% 0.03 235);
+
+  --app-primary: oklch(48% 0.13 190);
+  --app-primary-hover: oklch(42% 0.13 190);
+  --app-primary-soft: oklch(92% 0.04 190);
+
+  --app-success: oklch(52% 0.13 155);
+  --app-success-soft: oklch(93% 0.045 155);
+
+  --app-warning: oklch(65% 0.14 75);
+  --app-warning-soft: oklch(94% 0.055 75);
+
+  --app-danger: oklch(56% 0.16 25);
+  --app-danger-soft: oklch(94% 0.045 25);
+
+  --app-radius: 8px;
+  --app-shadow: 0 1px 2px rgb(15 23 42 / 0.05), 0 8px 24px rgb(15 23 42 / 0.04);
+}
+
 * {
-    font-family: "Outfit", "Inter";
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  background: var(--app-bg);
+  color: var(--app-text);
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
 }
 
 @layer utilities {
     /* Card styles */
     .card {
-        @apply bg-white rounded-lg border border-slate-200/70 shadow-sm;
+    background: var(--app-surface);
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius);
+    box-shadow: var(--app-shadow);
     }
+
     .card-hover {
-        @apply hover:-translate-y-0.5 transition-all duration-300;
+        transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    .card-hover:hover {
+        border-color: var(--app-border-strong);
+        transform: translateY(-1px);
     }
 
     /* Button styles */
     .btn-primary {
-        @apply bg-slate-900 text-white px-5 py-2.5 rounded-md text-sm
-        hover:bg-slate-800 transition-all duration-200
-        active:scale-[0.98];
+    background: var(--app-primary);
+    color: oklch(98% 0.004 190);
+    border: 1px solid transparent;
+    border-radius: 7px;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease;
     }
+
+    .btn-primary:hover {
+        background: var(--app-primary-hover);
+    }
+
+    .btn-primary:active {
+        transform: scale(0.98);
+    }
+
     .btn-secondary {
-         @apply bg-white text-slate-700 border border-slate-200 px-5 py-2.5 rounded-md text-sm
-        hover:bg-slate-50 hover:border-slate-300 transition-all duration-200;
+        background: var(--app-surface);
+        color: var(--app-text);
+        border: 1px solid var(--app-border);
+        border-radius: 7px;
+        padding: 0.625rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+    }
+
+    .btn-secondary:hover {
+        background: var(--app-surface-muted);
+        border-color: var(--app-border-strong);
     }
 
     /* Input, Select, Textarea styles */
     input,
     select,
     textarea {
-        @apply w-full px-4 py-2.5 bg-slate-50/50 border border-slate-200 rounded-md
-        focus:outline-none focus:ring-2 focus:ring-slate-300 focus:border-slate-400
-        transition-all duration-200 text-sm placeholder:text-slate-400;
+        width: 100%;
+        background: var(--app-surface);
+        border: 1px solid var(--app-border);
+        border-radius: 7px;
+        color: var(--app-text);
+        padding: 0.625rem 0.875rem;
+        font-size: 0.875rem;
+        transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        color: var(--app-text-soft);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
+        border-color: var(--app-primary);
+        box-shadow: 0 0 0 3px color-mix(in oklch, var(--app-primary) 18%, transparent);
     }
 
     /* Table styles */
@@ -56,27 +150,48 @@
 
     /* Badge styles */
     .badge {
-        @apply inline-flex items-center px-2.5 py-1 rounded-md text-xs;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    border-radius: 999px;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
     }
+
     .badge-success {
-        @apply bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/10;
+    background: var(--app-success-soft);
+    color: var(--app-success);
     }
+
     .badge-warning {
-        @apply bg-amber-50 text-amber-700 ring-1 ring-amber-600/10;
+    background: var(--app-warning-soft);
+    color: var(--app-warning);
     }
+
     .badge-danger {
-        @apply bg-rose-50 text-rose-700 ring-1 ring-rose-600/10;
+    background: var(--app-danger-soft);
+    color: var(--app-danger);
     }
 
     /* Page header */
     .page-header {
-        @apply mb-8;
+    margin-bottom: 1.75rem;
     }
+
     .page-title {
-        @apply text-2xl font-medium text-slate-900 tracking-tight;
+    color: var(--app-text);
+    font-size: 1.625rem;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: 0;
     }
+
     .page-subtitle {
-        @apply text-slate-500 text-sm mt-1;
+    color: var(--app-text-muted);
+    font-size: 0.875rem;
+    margin-top: 0.375rem;
     }
 
     /* Animations */
