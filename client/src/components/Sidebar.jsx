@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   Building2Icon,
   Calendar1Icon,
-  ChevronRightIcon,
   DollarSign,
   FileTextIcon,
   LayoutGridIcon,
@@ -92,7 +91,7 @@ const Sidebar = () => {
 
       {/* User Profile */}
       {userName && (
-        <section className="mx-3 rounded-lg border border-white/10 bg-white/[0.04] p-3">
+        <section className="mx-3 rounded-lg border border-white/10 bg-white/4 p-3">
           <div className="flex items-center gap-3">
             <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-white/10 text-xs font-semibold text-slate-200">
               {initials}
@@ -144,20 +143,12 @@ const Sidebar = () => {
                     }`}
                     aria-current={isActive ? "page" : undefined}
                   >
-                    {isActive && (
-                      <div className='absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-5 rounded-r-full bg-slate-500'></div>
-                    )}
-
                     <item.icon
                       className={`size-4.25 shrink-0 ${
                       isActive ? 'text-(--app-primary)' : 'text-slate-500 group-hover:text-slate-300' }`}
                     />
 
                     <span className='flex-1'>{item.name}</span>
-
-                    {isActive && (
-                      <ChevronRightIcon className='w-3.5 h-3.5 text-slate-500/50'/>
-                    )}
                   </Link>
                 </li>
               );
@@ -183,7 +174,7 @@ const Sidebar = () => {
   return (
     <>
       {/* Mobile Menu Button */}
-      <header className="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b border-(--app-border) `bg-(--app-surface) px-4 shadow-sm lg:hidden">
+      <header className="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b border-(--app-border) bg-(--app-surface) px-4 shadow-sm lg:hidden">
         <button
           className="rounded-md p-2 text-(--app-text) transition-colors hover:bg-(--app-surface-muted)"
           onClick={() => setMobileOpen(true)}
