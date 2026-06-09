@@ -23,7 +23,7 @@ const EmployeeForm = ({initialData, onSuccess, onCancel}) => {
         await api[method](url, formData);
         onSuccess ? onSuccess() : navigate("/employees");
       } catch (error) {
-        toast.error(err.response?.data?.error || err.message);
+        toast.error(error.response?.data?.error || error.message);
       } finally{
         setLoading(false);
       }
