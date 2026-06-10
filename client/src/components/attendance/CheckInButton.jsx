@@ -1,45 +1,99 @@
 import { useState } from 'react'
-import {Loader2Icon, LogInIcon, LogOutIcon} from 'lucide-react'
+import { 
+  CheckCircle2Icon,
+  Clock3Icon,
+  Loader2Icon,
+  LogInIcon,
+  LogOutIcon } from 'lucide-react'
 import api from '../../api/axios';
 import toast from 'react-hot-toast';
 
 const CheckInButton = ({todayRecord, onAction}) => {
   const [loading, setLoading] = useState(false);
 
-  const handleAttendace = async() => {
-    setLoading(true);
-    try {
-      await api.post("/attendance");
-      onAction();
-    } catch (error) {
-      toast.error(error?.response?.data?.error || error?.message);
-    }
+  const handleAttendance = async () => {
+  setLoading(true);
+
+  try {
+    await api.post("/attendance");
+    onAction();
+  } catch (error) {
+    toast.error(error?.response?.data?.error || error?.message);
+  } finally {
     setLoading(false);
   }
+};
 
-  if(todayRecord?.checkOut){
-    return(
-      <div className='flex flex-col items-center justify-center p-8 bg-slate-50 rounded-2xl border border-slate-200'>
-        <h3 className='text-lg font-bold text-slate-900'>Work Day Completed</h3>
-        <p className='text-slate-500 text-sm mt-1'>Great job! See you tommorow</p>
-      </div>
-    )
-  }
+const isCheckedIn = !!todayRecord?.checkIn;
+const isCompleted = !!todayRecord?.checkOut;
 
-  const isCheckIn = !!todayRecord?.checkIn;
+const checkInTime = todayRecord?.checkIn
+  ? new Date(todayRecord.checkIn).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+  : "Not started";
+
+const checkOutTime = todayRecord?.checkOut
+  ? new Date(todayRecord.checkOut).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+  : "Pending";
+
+if (isCompleted) {
   return (
-    <div className='absolute bottom-4 right-4 flex flex-col z-1'>
-      <button onClick={handleAttendace} disabled={loading} className={`w-full max-w-xs flex justify-between items-center gap-8 p-4 rounded-xl bg-linear-to-br text-white ${isCheckIn ? "bg-gray-800 text-white" : "bg-gray-900 text-white"} hover:bg-gray-700 transition-colors duration-200 cursor-pointer`}>
+    <section className="card p-5 sm:p-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-4">
+          <div className="flex size-12 items-center justify-center rounded-lg bg-(--app-success-soft) text-(--app-success)">
+            <CheckCircle2Icon className="size-6" />
+          </div>
 
-        {loading ? <Loader2Icon className='size-7 animate-spin'/> : isCheckIn ? <LogOutIcon className='size-7'/>: <LogInIcon className='size-7'/> }
-
-        <div className='relative flex flex-col items-center text-center'>
-          <h2 className='text-lg font-medium mb-1'>{loading ? 'Processing...': isCheckIn ? 'Clock Out': 'Clock In' }</h2>
-          <p className='text-xs opacity-80'>{isCheckIn ? 'Click to end your shift' : 'Start your work day'}</p>
+          <div>
+            <h2 className="text-base font-semibold text-(--app-text)">Workday Completed</h2>
+            <p className="mt-1 text-sm text-(--app-text-muted)">
+              Checked in at {checkInTime}, checked out at {checkOutTime}.
+            </p>
+          </div>
         </div>
+
+        <span className="badge badge-success">Completed</span>
+      </div>
+    </section>
+  );
+}
+
+return (
+  <section className="card p-5 sm:p-6">
+    <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex items-center gap-4">
+        <div className="flex size-12 items-center justify-center rounded-lg bg-(--app-primary-soft) text-(--app-primary)">
+          <Clock3Icon className="size-6" />
+        </div>
+
+        <div>
+          <h2 className="text-base font-semibold text-(--app-text)">
+            {isCheckedIn ? "You are checked in" : "Ready to start your day"}
+          </h2>
+          <p className="mt-1 text-sm text-(--app-text-muted)">
+            {isCheckedIn ? `Checked in at ${checkInTime}.` : "Clock in when your shift begins."}
+          </p>
+        </div>
+      </div>
+
+      <button
+        onClick={handleAttendance}
+        disabled={loading}
+        className="btn-primary inline-flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        {loading ? (
+          <Loader2Icon className="size-4 animate-spin" />
+        ) : isCheckedIn ? (
+          <LogOutIcon className="size-4" />
+        ) : (
+          <LogInIcon className="size-4" />
+        )}
+
+        {loading ? "Processing..." : isCheckedIn ? "Clock Out" : "Clock In"}
       </button>
     </div>
-  )
+  </section>
+);
 }
 
 export default CheckInButton

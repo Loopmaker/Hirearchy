@@ -1,70 +1,85 @@
 import { getDayTypeDisplay, getWorkingHoursDisplay } from "../../assets/assets"
 import {format} from 'date-fns'
+import { CalendarXIcon } from "lucide-react";
 const AttendanceHistory = ({history}) => {
+  const sortedHistory = [...history].sort(
+  (a, b) => new Date(b.date) - new Date(a.date)
+  );
   return (
-    <div className="card overflow-hidden">
-      <div className="px-6 py-4 border-b border-slate-100">
-        <h3 className="font-semibold text-slate-900">Recent Activity</h3>
+  <section className="card overflow-hidden">
+    <header className="flex items-center justify-between border-b border-(--app-border) px-5 py-4">
+      <div>
+        <h2 className="text-base font-semibold text-(--app-text)">Recent Activity</h2>
+        <p className="mt-1 text-sm text-(--app-text-muted)">
+          Latest attendance records and daily status.
+        </p>
       </div>
+    </header>
+
+    {sortedHistory.length === 0 ? (
+      <div className="flex flex-col items-center justify-center px-6 py-16 text-center">
+        <CalendarXIcon className="mb-3 size-9 text-(--app-text-soft)" />
+        <h3 className="text-sm font-semibold text-(--app-text)">No attendance records</h3>
+        <p className="mt-1 text-sm text-(--app-text-muted)">
+          Your check-ins will appear here.
+        </p>
+      </div>
+    ) : (
       <div className="overflow-x-auto">
-        <table className="table-modern">
+        <table className="table-modern min-w-205">
           <thead>
             <tr>
-              <th className="px-6 py-4">Date</th>
-              <th className="px-6 py-4">Check In</th>
-              <th className="px-6 py-4">Check Out</th>
-              <th className="px-6 py-4">Working Hours</th>
-              <th className="px-6 py-4">Day Type</th>
-              <th className="px-6 py-4">Status</th>
+              <th>Date</th>
+              <th>Check In</th>
+              <th>Check Out</th>
+              <th>Working Hours</th>
+              <th>Day Type</th>
+              <th>Status</th>
             </tr>
           </thead>
+
           <tbody>
-            {history.length === 0 ? (
-              <tr>
-                <td colSpan={6} className="text-center py-12 text-slate-400">
-                  No records found
-                </td>
-              </tr>
-            ):(
-              history.map((record)=>{
-                const dayType = getDayTypeDisplay(record)
-                return (
-                  <tr key={record._id || record.id}>
+            {sortedHistory.map((record) => {
+              const dayType = getDayTypeDisplay(record);
 
-                    <td className="px-6 py-4 font-medium text-slate-900">
-                      {format(new Date(record.date), 'MMM dd, yyyy')}
-                    </td>
+              return (
+                <tr key={record._id || record.id}>
+                  <td className="font-medium text-(--app-text)">
+                    {format(new Date(record.date), "MMM dd, yyyy")}
+                  </td>
 
-                    <td className="px-6 py-4 text-slate-600">
-                      {record.checkIn ? format(new Date(record.checkIn), 'hh:mm a'): '-'}
-                    </td>
+                  <td>{record.checkIn ? format(new Date(record.checkIn), "hh:mm a") : "-"}</td>
+                  <td>{record.checkOut ? format(new Date(record.checkOut), "hh:mm a") : "-"}</td>
+                  <td className="font-medium">{getWorkingHoursDisplay(record)}</td>
 
-                    <td className="px-6 py-4 text-slate-600">
-                      {record.checkOut ? format(new Date(record.checkOut), 'hh:mm a'): '-'}
-                    </td>
+                  <td>
+                    {dayType.label !== "-" ? (
+                      <span className={`badge ${dayType.className}`}>{dayType.label}</span>
+                    ) : (
+                      "-"
+                    )}
+                  </td>
 
-                    <td className="px-6 py-4 text-slate-600 font-medium">
-                      {getWorkingHoursDisplay(record)}
-                    </td>
-
-                    <td className="px-6 py-4">
-                      {dayType.label !== '-' ? <span className={`badge ${dayType.className}`}>{dayType.label}</span> : '-'}
-                    </td>
-
-                    <td className="px-6 py-4">
-                      <span className={`badge ${record.status === 'PRESENT' ? 'badge-success' : record.status === 'LATE' ? 'badge-warning': 'badge-danger'}`}>
-                        {record.status}
-                      </span>
-                    </td>
-                  </tr>
-                )
-              })
-            )}
+                  <td>
+                    <span className={`badge ${
+                      record.status === "PRESENT"
+                        ? "badge-success"
+                        : record.status === "LATE"
+                          ? "badge-warning"
+                          : "badge-danger"
+                    }`}>
+                      {record.status}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
-    </div>
-  )
+    )}
+  </section>
+);
 }
 
 export default AttendanceHistory

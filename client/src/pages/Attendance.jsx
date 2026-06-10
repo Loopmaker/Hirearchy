@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react"
-import { dummyAttendanceData } from "../assets/assets";
 import Loading from "../components/Loading";
 import CheckInButton from '../components/attendance/CheckInButton'
 import AttendanceStats from "../components/attendance/AttendanceStats";
@@ -36,25 +35,28 @@ const Attendance = () => {
   const todayRecord = history.find((r) => new Date(r.date).toDateString() === today.toDateString());
 
   return (
-    <div className="animate-fade-in">
-      <div className="page-header">
-        <h1 className="page-title">Attendance</h1>
-        <p className="page-subtitle">Track your work hours and daily check-ins</p>
-      </div>
-      {isDeleted ? (
-        <div className="mb-8 p-6 bg-rose-50 border border-rose-200 rounded-2xl text-center">
-          <p className="text-rose-600">You can no longer clock in or out because your employee records have been marked as deleted.</p>
-        </div>
-      ): (
-        <div className="mb-8">
-          <CheckInButton todayRecord={todayRecord} onAction={fetchData}/>
-        </div>
-      )}
+  <main className="animate-fade-in space-y-6">
+    <header>
+      <h1 className="page-title">Attendance</h1>
+      <p className="page-subtitle">
+        Track today’s workday, check-ins, and attendance history.
+      </p>
+    </header>
 
-      <AttendanceStats history={history}/>
-      <AttendanceHistory history={history}/>
-    </div>
-  )
+    {isDeleted ? (
+      <section className="rounded-lg border border-(--app-danger) bg-(--app-danger-soft) p-5 text-center">
+        <p className="text-sm font-medium text-(--app-danger)">
+          You can no longer clock in or out because your employee record has been marked as deleted.
+        </p>
+      </section>
+    ) : (
+      <CheckInButton todayRecord={todayRecord} onAction={fetchData} />
+    )}
+
+    <AttendanceStats history={history} />
+    <AttendanceHistory history={history} />
+  </main>
+);
 }
 
 export default Attendance
