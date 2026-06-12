@@ -9,9 +9,12 @@ export const getProfile =async (req, res) => {
         firstName: "Admin",
         lastName: "",
         email: session.email,
+        role: session.role,
       })
     }
-    return res.json(employee);
+    const employeeData = employee.toObject();
+    employeeData.role = session.role; 
+    return res.json(employeeData);
   } catch (error) {
     return res.status(500).json({error: "Failed to fetch profile"});
   }
