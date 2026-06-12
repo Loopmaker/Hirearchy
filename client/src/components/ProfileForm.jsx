@@ -1,4 +1,4 @@
-import { LAlertCircleIcon, CheckCircle2Icon, Loader2, Save, User } from "lucide-react";
+import { AlertCircleIcon, CheckCircle2Icon, Loader2, Save, User } from "lucide-react";
 import { useState } from "react"
 import api from "../api/axios";
 
