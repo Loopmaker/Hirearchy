@@ -27,26 +27,50 @@ const ChangePasswordModal = ({open, onClose}) => {
   if(!open) return null;
   
   return (
-    <main onClick={onClose} className='fixed inset-0 z-50 flex items-center justify-center p-4'>
-      <div className='absolute inset-0 bg-black/40 backdrop-blur-sm'/>
-      <section className='relative bg-white rounded-2xl shadow-2xl w-full max-w-md animate-fade-in' onClick={(e)=> e.stopPropagation()}>
-        <header className='flex items-center justify-between p-6 pb-0'>
-          <h2 className='text-lg font-medium text-slate-900 flex items-center gap-2'><LockIcon className='w-5 h-5 text-slate-400'/> Change Password</h2>
-          <button onClick={onClose} className='p-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-600'><X className='w-5 h-5 cursor-pointer'/></button>
+    <main onClick={onClose} className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
+      <section
+        className="relative w-full max-w-md rounded-lg bg-(--app-surface) shadow-2xl animate-fade-in"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <header className="flex items-start justify-between border-b border-(--app-border)] p-5">
+          <div>
+            <h2 className="flex items-center gap-2 text-lg font-semibold text-(--app-text)">
+              <LockIcon className="size-5 text-(--app-primary)" />
+              Change Password
+            </h2>
+            <p className="mt-1 text-sm text-(--app-text-muted)">
+              Enter your current password and choose a new one.
+            </p>
+          </div>
+
+          <button
+            onClick={onClose}
+            className="rounded-md p-2 text-(--app-text-muted) transition-colors hover:bg-(--app-surface-muted) hover:text-(--app-text)"
+            aria-label="Close"
+          >
+            <X className="size-5" />
+          </button>
         </header>
         <form className='p-6 space-y-5' onSubmit={handleSubmit}>
           {message.text && (
-            <div className={`p-3 rounded-xl text-sm flex items-start gap-3 ${message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200': 'bg-rose-50 text-rose-700 border border-rose-200' }`}>
-              <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${message.type === 'success' ? 'bg-emerald-500': 'bg-rose-500'}`}/>
-              {message.text}
+            <div className={`flex items-start gap-3 rounded-lg border p-4 text-sm ${
+              message.type === "success"
+                ? "border-(--app-success) bg-(--app-success-soft) text-(--app-success)"
+                : "border-(--app-danger) bg-(--app-danger-soft) text-(--app-danger)"
+            }`}>
+              <span>{message.text}</span>
             </div>
           )}
           <div>
-            <label className='block text-sm font-medium text-slate-700'>Current Password</label>
+            <label className="mb-2 block text-sm font-medium text-(--app-text)">
+              Current Password
+            </label>
             <input type='password' name='currentPassword' required/>
           </div>
           <div>
-            <label className='block text-sm font-medium text-slate-700'>New Password</label>
+            <label className="mb-2 block text-sm font-medium text-(--app-text)">
+              New Password
+            </label>
             <input type='password' name='newPassword' required/>
           </div>
           <footer className='flex gap-3 pt-2'>
