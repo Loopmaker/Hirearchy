@@ -44,6 +44,7 @@ const LoginLeftside = () => {
           key={slide.title}
           src={slide.image}
           alt=""
+          loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           style={{ opacity: index === activeIndex ? 1 : 0 }}
         />
