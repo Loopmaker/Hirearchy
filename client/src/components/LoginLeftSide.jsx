@@ -1,63 +1,83 @@
-import { Building2Icon, Calendar1Icon, DollarSignIcon, FileTextIcon } from "lucide-react"
+import { useEffect, useState } from "react"
+import { Building2Icon } from "lucide-react"
+import login1 from "../assets/login1.jpg"
+import login2 from "../assets/login2.jpg"
+import login3 from "../assets/login3.jpg"
 
-const features = [
-  { icon: Calendar1Icon, label: "Attendance" },
-  { icon: FileTextIcon, label: "Leave Management" },
-  { icon: DollarSignIcon, label: "Payroll" },
+const slides = [
+  {
+    image: login1, 
+    title: "Manage your workforce with ease",
+    subtitle: "Track attendance, approve leave, and run payroll — all in one place.",
+  },
+  {
+    image: login2, 
+    title: "Stay on top of attendance",
+    subtitle: "Real-time check-ins and clear records for every employee.",
+  },
+  {
+    image: login3,
+    title: "Payroll, simplified",
+    subtitle: "Generate and share payslips in just a few clicks.",
+  },
 ]
 
+const AUTO_PLAY_INTERVAL = 5000
+
 const LoginLeftside = () => {
+  const [activeIndex, setActiveIndex] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % slides.length)
+    }, AUTO_PLAY_INTERVAL)
+    return () => clearInterval(interval)
+  }, [])
+
+  const activeSlide = slides[activeIndex]
+
   return (
-    <div className="hidden md:flex w-1/2 relative overflow-hidden border-r border-white/5 bg-slate-950">
-      {/* Radial glow */}
-      <div
-        className="absolute -top-32 -right-32 size-112 rounded-full opacity-30 blur-3xl"
-        style={{ background: "radial-gradient(circle, var(--app-primary) 0%, transparent 70%)" }}
-      />
+    <div className="hidden md:flex w-1/2 relative overflow-hidden bg-slate-800">
 
-      {/* Dot grid texture */}
-      <div
-        className="absolute inset-0 opacity-[0.07]"
-        style={{
-          backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
-        }}
-      />
+      {slides.map((slide, index) => (
+        <img
+          key={slide.title}
+          src={slide.image}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: index === activeIndex ? 1 : 0 }}
+        />
+      ))}
 
-      {/* Bottom fade for depth */}
-      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-slate-950 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
 
-      <div className="relative z-10 flex flex-col justify-between w-full h-full p-12 lg:p-20">
-        {/* Logo / wordmark */}
-        <div className="flex items-center gap-3 animate-fade-in">
-          <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-white/10 ring-1 ring-white/10">
-            <Building2Icon className="size-5 text-white" />
-          </div>
-          <span className="text-sm font-semibold text-white">Hirearchy</span>
+      <div className="absolute top-8 left-8 flex items-center gap-3 z-10">
+        <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white shadow-sm">
+          <Building2Icon className="size-5 text-slate-900" />
         </div>
+        <span className="text-sm font-semibold text-white">Hirearchy</span>
+      </div>
 
-        {/* Main content */}
-        <div className="animate-slide-up">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-(--app-primary) mb-4">
-            Workforce Platform
-          </p>
-          <h1 className="text-4xl lg:text-5xl font-medium text-white mb-6 leading-tight tracking-tight">
-            Employee <br /> Management System
+      <div className="absolute bottom-0 left-0 right-0 z-10 p-12 lg:p-16">
+        <div key={activeIndex} className="animate-slide-up">
+          <h1 className="text-3xl lg:text-4xl font-semibold text-white mb-3 leading-tight tracking-tight">
+            {activeSlide.title}
           </h1>
-          <p className="text-slate-400 text-base lg:text-lg max-w-md leading-relaxed">
-            One place to manage attendance, leave, and payroll for your entire organization.
+          <p className="text-slate-200/90 text-base max-w-md leading-relaxed mb-6">
+            {activeSlide.subtitle}
           </p>
         </div>
 
-        {/* Feature highlights */}
-        <div className="flex flex-wrap items-center gap-x-8 gap-y-4 animate-fade-in">
-          {features.map((feature) => (
-            <div key={feature.label} className="flex items-center gap-2.5">
-              <div className="flex size-8 items-center justify-center rounded-md bg-white/5 ring-1 ring-white/10 text-(--app-primary)">
-                <feature.icon className="size-4" />
-              </div>
-              <span className="text-sm text-slate-300">{feature.label}</span>
-            </div>
+        <div className="flex items-center gap-2">
+          {slides.map((slide, index) => (
+            <button
+              key={slide.title}
+              onClick={() => setActiveIndex(index)}
+              aria-label={`Go to slide ${index + 1}`}
+              className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                index === activeIndex ? "w-8 bg-white" : "w-1.5 bg-white/40 hover:bg-white/60"
+              }`}
+            />
           ))}
         </div>
       </div>
