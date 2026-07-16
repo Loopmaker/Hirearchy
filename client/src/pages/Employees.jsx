@@ -1,6 +1,13 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react";
 import { DEPARTMENTS } from "../assets/assets";
-import { PencilIcon, Plus, Search, Trash2Icon, UsersIcon, X } from "lucide-react";
+import {
+  PencilIcon,
+  Plus,
+  Search,
+  Trash2Icon,
+  UsersIcon,
+  X,
+} from "lucide-react";
 import EmployeeForm from "../components/EmployeeForm";
 import api from "../api/axios";
 import toast from "react-hot-toast";
@@ -8,28 +15,34 @@ import toast from "react-hot-toast";
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
-  const [selectedDept, setSelectedDept] = useState('');
+  const [search, setSearch] = useState("");
+  const [selectedDept, setSelectedDept] = useState("");
   const [editEmployee, setEditEmployee] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
-  const fetchEmployees = useCallback(async () =>{
-   try {
-    const url = selectedDept ? `/employees?department=${selectedDept}` : "/employees";
-    const res = await api.get(url);
-    setEmployees(res.data)
-   } catch (error) {
-    console.error("Failed to fetch employees", error);
-   } finally{
-    setLoading(false);
-   }
-  }, [selectedDept])
+  const fetchEmployees = useCallback(async () => {
+    try {
+      const url = selectedDept
+        ? `/employees?department=${selectedDept}`
+        : "/employees";
+      const res = await api.get(url);
+      setEmployees(res.data);
+    } catch (error) {
+      console.error("Failed to fetch employees", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [selectedDept]);
 
   useEffect(() => {
     fetchEmployees();
-  }, [fetchEmployees])
+  }, [fetchEmployees]);
 
-  const filtered = employees.filter((emp) => `${emp.firstName} ${emp.lastName} ${emp.position}`.toLowerCase().includes(search.toLowerCase()))
+  const filtered = employees.filter((emp) =>
+    `${emp.firstName} ${emp.lastName} ${emp.position}`
+      .toLowerCase()
+      .includes(search.toLowerCase()),
+  );
 
   const activeCount = employees.filter((emp) => !emp.isDeleted).length;
   const deletedCount = employees.filter((emp) => emp.isDeleted).length;
@@ -49,10 +62,9 @@ const Employees = () => {
     } catch (error) {
       toast.error(error.response?.data?.error || error.message);
     }
-};
+  };
   return (
     <div className="animate-fade-in">
-      {/* Need to clean up, theres so many divs */}
       {/* Header */}
       <header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
@@ -74,17 +86,23 @@ const Employees = () => {
       <section className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
         <div className="card p-4">
           <p className="text-sm text-(--app-text-muted)">Total Employees</p>
-          <p className="mt-1 text-2xl font-semibold text-(--app-text)">{employees.length}</p>
+          <p className="mt-1 text-2xl font-semibold text-(--app-text)">
+            {employees.length}
+          </p>
         </div>
 
         <div className="card p-4">
           <p className="text-sm text-(--app-text-muted)">Active Records</p>
-          <p className="mt-1 text-2xl font-semibold text-(--app-success)">{activeCount}</p>
+          <p className="mt-1 text-2xl font-semibold text-(--app-success)">
+            {activeCount}
+          </p>
         </div>
 
         <div className="card p-4">
           <p className="text-sm text-(--app-text-muted)">Deleted Records</p>
-          <p className="mt-1 text-2xl font-semibold text-(--app-danger)">{deletedCount}</p>
+          <p className="mt-1 text-2xl font-semibold text-(--app-danger)">
+            {deletedCount}
+          </p>
         </div>
       </section>
 
@@ -109,17 +127,22 @@ const Employees = () => {
           >
             <option value="">All Departments</option>
             {DEPARTMENTS.map((dept) => (
-              <option key={dept} value={dept}>{dept}</option>
+              <option key={dept} value={dept}>
+                {dept}
+              </option>
             ))}
           </select>
         </div>
       </section>
 
       {/* Employee Cards */}
-        {loading ? (
+      {loading ? (
         <section className="card overflow-hidden">
           {Array.from({ length: 6 }).map((_, index) => (
-            <div key={index} className="flex animate-pulse items-center gap-4 border-b border-(--app-border) p-4 last:border-b-0">
+            <div
+              key={index}
+              className="flex animate-pulse items-center gap-4 border-b border-(--app-border) p-4 last:border-b-0"
+            >
               <div className="size-10 rounded-full bg-(--app-surface-muted)" />
               <div className="flex-1 space-y-2">
                 <div className="h-3 w-40 rounded bg-(--app-surface-muted)" />
@@ -133,7 +156,9 @@ const Employees = () => {
           {filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center px-6 py-16 text-center">
               <UsersIcon className="mb-3 size-9 text-(--app-text-soft)" />
-              <h2 className="text-sm font-semibold text-(--app-text)">No employees found</h2>
+              <h2 className="text-sm font-semibold text-(--app-text)">
+                No employees found
+              </h2>
               <p className="mt-1 text-sm text-(--app-text-muted)">
                 Try changing the search or department filter.
               </p>
@@ -157,14 +182,17 @@ const Employees = () => {
                       <td>
                         <div className="flex items-center gap-3">
                           <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-(--app-primary-soft) text-sm font-semibold text-(--app-primary)">
-                            {emp.firstName?.[0]}{emp.lastName?.[0]}
+                            {emp.firstName?.[0]}
+                            {emp.lastName?.[0]}
                           </div>
 
                           <div>
                             <p className="font-medium text-(--app-text)">
                               {emp.firstName} {emp.lastName}
                             </p>
-                            <p className="text-xs text-(--app-text-muted)">{emp.email || "No email"}</p>
+                            <p className="text-xs text-(--app-text-muted)">
+                              {emp.email || "No email"}
+                            </p>
                           </div>
                         </div>
                       </td>
@@ -173,7 +201,9 @@ const Employees = () => {
                       <td>{emp.position || "Not specified"}</td>
 
                       <td>
-                        <span className={`badge ${emp.isDeleted ? "badge-danger" : "badge-success"}`}>
+                        <span
+                          className={`badge ${emp.isDeleted ? "badge-danger" : "badge-success"}`}
+                        >
                           {emp.isDeleted ? "Deleted" : "Active"}
                         </span>
                       </td>
@@ -210,48 +240,50 @@ const Employees = () => {
 
       {/* Create Employee Modal */}
       {formOpen && (
-      <div className="fixed inset-0 z-50 flex justify-end bg-slate-950/50">
-        <button
-          className="absolute inset-0 cursor-default"
-          onClick={closeForm}
-          aria-label="Close employee form"
-        />
+        <div className="fixed inset-0 z-50 flex justify-end bg-slate-950/50">
+          <button
+            className="absolute inset-0 cursor-default"
+            onClick={closeForm}
+            aria-label="Close employee form"
+          />
 
-        <aside className="relative h-full w-full max-w-3xl overflow-y-auto bg-(--app-surface) shadow-2xl">
-          <header className="sticky top-0 z-10 flex items-start justify-between border-b border-(--app-border) bg-(--app-surface) p-5">
-            <div>
-              <h2 className="text-lg font-semibold text-(--app-text)">
-                {editEmployee ? "Edit Employee" : "Add Employee"}
-              </h2>
-              <p className="mt-1 text-sm text-(--app-text-muted)">
-                {editEmployee ? "Update employee details." : "Create a user account and employee profile."}
-              </p>
+          <aside className="relative h-full w-full max-w-3xl overflow-y-auto bg-(--app-surface) shadow-2xl">
+            <header className="sticky top-0 z-10 flex items-start justify-between border-b border-(--app-border) bg-(--app-surface) p-5">
+              <div>
+                <h2 className="text-lg font-semibold text-(--app-text)">
+                  {editEmployee ? "Edit Employee" : "Add Employee"}
+                </h2>
+                <p className="mt-1 text-sm text-(--app-text-muted)">
+                  {editEmployee
+                    ? "Update employee details."
+                    : "Create a user account and employee profile."}
+                </p>
+              </div>
+
+              <button
+                onClick={closeForm}
+                className="rounded-md p-2 text-(--app-text-muted) transition-colors hover:bg-(--app-surface-muted) hover:text-(--app-text)"
+                aria-label="Close"
+              >
+                <X className="size-5" />
+              </button>
+            </header>
+
+            <div className="p-5">
+              <EmployeeForm
+                initialData={editEmployee}
+                onSuccess={() => {
+                  closeForm();
+                  fetchEmployees();
+                }}
+                onCancel={closeForm}
+              />
             </div>
-
-            <button
-              onClick={closeForm}
-              className="rounded-md p-2 text-(--app-text-muted) transition-colors hover:bg-(--app-surface-muted) hover:text-(--app-text)"
-              aria-label="Close"
-            >
-              <X className="size-5" />
-            </button>
-          </header>
-
-          <div className="p-5">
-            <EmployeeForm
-              initialData={editEmployee}
-              onSuccess={() => {
-                closeForm();
-                fetchEmployees();
-              }}
-              onCancel={closeForm}
-            />
-          </div>
-        </aside>
-      </div>
-    )}
+          </aside>
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default Employees
+export default Employees;
