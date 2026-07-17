@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
 import "dotenv/config";
 import multer from "multer";
 import connectDB from "./config/db.js";
@@ -12,7 +13,7 @@ import payslipRouter from "./routes/payslipRoutes.js";
 import dashboardRouter from "./routes/dashboardRoutes.js";
 
 import { serve } from "inngest/express";
-import { inngest, functions } from "./inngest/index.js"
+import { inngest, functions } from "./inngest/index.js";
 import dbPingRouter from "./routes/dbPingRouter.js";
 
 const app = express();
@@ -20,6 +21,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 //Middleware
+app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(multer().none());
@@ -37,7 +39,6 @@ app.use("/api/db", dbPingRouter);
 
 app.use("/api/inngest", serve({ client: inngest, functions }));
 
-
 await connectDB();
 
-app.listen(PORT, ()=> console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
