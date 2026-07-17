@@ -32,6 +32,10 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(multer().none());
+app.use((req, res, next) => {
+  res.setHeader("Cache-Control", "no-store");
+  next();
+});
 
 //Routes
 app.get("/", (req, res) => res.send("Server is running"));
