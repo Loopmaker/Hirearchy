@@ -1,5 +1,5 @@
-import  { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
   Building2Icon,
   Calendar1Icon,
@@ -11,28 +11,27 @@ import {
   MenuIcon,
   SettingsIcon,
   UserIcon,
-  XIcon
-} from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
-import api from '../api/axios';
-
+  XIcon,
+} from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+import api from "../api/axios";
 
 const Sidebar = () => {
-
   const { pathname } = useLocation();
-  const [ userName, setUserName ] = useState('');
+  const [userName, setUserName] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const {user, loading, logout} = useAuth();
+  const { user, loading, logout } = useAuth();
 
-  useEffect(() =>{
-    api.get("/profile").then(({data})=>{
-      if(data.firstName) setUserName(`${data.firstName} ${data.lastName || ""}`.trim());
-    })
+  useEffect(() => {
+    api.get("/profile").then(({ data }) => {
+      if (data.firstName)
+        setUserName(`${data.firstName} ${data.lastName || ""}`.trim());
+    });
   }, []);
 
-  useEffect(() =>{
-      setMobileOpen(false);
+  useEffect(() => {
+    setMobileOpen(false);
   }, [pathname]);
 
   const role = user?.role;
@@ -48,19 +47,18 @@ const Sidebar = () => {
       ? "AD"
       : "EM";
   const navItems = [
-    { name: 'Dashboard', href: '/dashboard', icon: LayoutGridIcon },
-    role === "ADMIN" ?
-    { name: 'Employees', href: '/employees', icon: UserIcon } :
-    { name: 'Attendance', href: '/attendance', icon: Calendar1Icon },
-    { name: 'Leave', href: '/leave', icon: FileTextIcon },
-    { name: 'Payslips', href: '/payslips', icon: DollarSign },
-    { name: 'Settings', href: '/settings', icon: SettingsIcon },
+    { name: "Dashboard", href: "/dashboard", icon: LayoutGridIcon },
+    role === "ADMIN"
+      ? { name: "Employees", href: "/employees", icon: UserIcon }
+      : { name: "Attendance", href: "/attendance", icon: Calendar1Icon },
+    { name: "Leave", href: "/leave", icon: FileTextIcon },
+    { name: "Payslips", href: "/payslips", icon: DollarSign },
+    { name: "Settings", href: "/settings", icon: SettingsIcon },
   ];
 
-  const handleLogout = () => {
-    logout()
-    window.location.href = '/login';
-
+  const handleLogout = async () => {
+    await logout();
+    window.location.href = "/login";
   };
 
   const sidebarContent = (
@@ -74,8 +72,12 @@ const Sidebar = () => {
             </div>
 
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-white">Hirearchy</p>
-              <p className="truncate text-xs text-slate-400">Employee Management</p>
+              <p className="truncate text-sm font-semibold text-white">
+                Hirearchy
+              </p>
+              <p className="truncate text-xs text-slate-400">
+                Employee Management
+              </p>
             </div>
           </div>
 
@@ -107,12 +109,11 @@ const Sidebar = () => {
         </section>
       )}
 
-       {/* Navigation Section */}
+      {/* Navigation Section */}
       <section className="flex-1 flex flex-col overflow-hidden">
-        
         {/* Section label */}
-        <header className='px-5 pt-5 pb-2'>
-          <h2 className='text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500'>
+        <header className="px-5 pt-5 pb-2">
+          <h2 className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">
             Navigation
           </h2>
         </header>
@@ -120,54 +121,59 @@ const Sidebar = () => {
         {/* Navigation */}
         <nav
           aria-label="Main navigation"
-          className='flex-1 px-3 space-y-0.5 overflow-y-auto'
+          className="flex-1 px-3 space-y-0.5 overflow-y-auto"
         >
           {loading ? (
-            <div className='px-3 py-3 flex items-center gap-2 text-slate-500'>
-              <Loader2 className='animate-spin w-4 h-4'/>
-              <span className='text-sm'>Loading...</span>
+            <div className="px-3 py-3 flex items-center gap-2 text-slate-500">
+              <Loader2 className="animate-spin w-4 h-4" />
+              <span className="text-sm">Loading...</span>
             </div>
           ) : (
             <ul>
-            {navItems.map((item) => {
-              const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+              {navItems.map((item) => {
+                const isActive =
+                  pathname === item.href ||
+                  pathname.startsWith(`${item.href}/`);
 
-              return (
-                <li key={item.name}>
-                  <Link
-                    to={item.href}
-                    className={`group flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
-                      isActive
-                        ? 'bg-white text-slate-950 shadow-sm'
-                        : 'text-slate-400 hover:bg-white/10 hover:text-slate-100'
-                    }`}
-                    aria-current={isActive ? "page" : undefined}
-                  >
-                    <item.icon
-                      className={`size-4.25 shrink-0 ${
-                      isActive ? 'text-(--app-primary)' : 'text-slate-500 group-hover:text-slate-300' }`}
-                    />
+                return (
+                  <li key={item.name}>
+                    <Link
+                      to={item.href}
+                      className={`group flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
+                        isActive
+                          ? "bg-white text-slate-950 shadow-sm"
+                          : "text-slate-400 hover:bg-white/10 hover:text-slate-100"
+                      }`}
+                      aria-current={isActive ? "page" : undefined}
+                    >
+                      <item.icon
+                        className={`size-4.25 shrink-0 ${
+                          isActive
+                            ? "text-(--app-primary)"
+                            : "text-slate-500 group-hover:text-slate-300"
+                        }`}
+                      />
 
-                    <span className='flex-1'>{item.name}</span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-
+                      <span className="flex-1">{item.name}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
           )}
-          
-          </nav>
-        </section>
+        </nav>
+      </section>
 
       {/* Logout */}
-      <footer className='p-3 border-t border-white/6'>
-        <button onClick={handleLogout} className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-slate-400 transition-colors hover:bg-rose-500/10 hover:text-rose-300">
-        <LogOutIcon className='w-4.25 h-4.25'/>
-        <span>Logout</span>
+      <footer className="p-3 border-t border-white/6">
+        <button
+          onClick={handleLogout}
+          className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-slate-400 transition-colors hover:bg-rose-500/10 hover:text-rose-300"
+        >
+          <LogOutIcon className="w-4.25 h-4.25" />
+          <span>Logout</span>
         </button>
       </footer>
-
     </aside>
   );
 
@@ -185,11 +191,13 @@ const Sidebar = () => {
 
         <div className="flex items-center gap-2">
           <Building2Icon className="size-5 text-(--app-primary)" />
-          <span className="text-sm font-semibold text-(--app-text)">Hirearchy</span>
+          <span className="text-sm font-semibold text-(--app-text)">
+            Hirearchy
+          </span>
         </div>
 
         <div className="size-9" />
-     </header>
+      </header>
 
       {mobileOpen && (
         <div
@@ -204,14 +212,15 @@ const Sidebar = () => {
       </aside>
 
       {/* Mobile Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-72 bg-slate-950 text-white   transition-transform duration-200 ease-out lg:hidden ${
-        mobileOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}>
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-72 bg-slate-950 text-white   transition-transform duration-200 ease-out lg:hidden ${
+          mobileOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
         {sidebarContent}
       </aside>
-
     </>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

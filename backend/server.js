@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import cookieParser from "cookie-parser";
 import "dotenv/config";
 import multer from "multer";
 import connectDB from "./config/db.js";
@@ -22,7 +23,13 @@ const PORT = process.env.PORT || 4000;
 
 //Middleware
 app.use(helmet());
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true,
+  }),
+);
+app.use(cookieParser());
 app.use(express.json());
 app.use(multer().none());
 
